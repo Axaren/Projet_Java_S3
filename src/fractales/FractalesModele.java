@@ -1,5 +1,6 @@
 package fractales;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 
@@ -25,7 +26,8 @@ public class FractalesModele extends Observable {
 	
 	private int m_zoom;
 
-	BufferedImage m_image;
+	private BufferedImage m_image;
+	private Graphics2D graphic;
 	
 	public FractalesModele() {
 		m_iterations_max = ITERATIONS_MIN;

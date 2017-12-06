@@ -3,6 +3,8 @@ package fractales;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.Math;
+import java.awt.Graphics2D;
+import java.awt.Point;
 
 import org.apache.commons.math3.complex.Complex;
 
@@ -93,4 +95,43 @@ public class FractalesControleur {
 		}
 	}
 
+	public void calculer_image_flocon(int iterations){
+		BufferedImage new_img = new BufferedImage(m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale(), BufferedImage.TYPE_INT_RGB);
+		
+		graphic = new_img.createGraphics();
+		//graphic.clearRect(0, 0, m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale());
+		Point a = new Point(m_modele.get_largeur_fractale() / 2 , m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3 -(int)(m_modele.get_largeur_fractale() / (2*Math.sqrt(3))));
+		Point b = new Point(m_modele.get_largeur_fractale() / 3, 								   m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
+		Point c = new Point(m_modele.get_largeur_fractale() - m_modele.get_largeur_fractale() / 3, m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
+		calculer_flocon(iterations, a, b);
+		calculer_flocon(iterations, b, c);
+		calculer_flocon(iterations, c, a);
+		
+		System.out.println(a.distance(b));
+		System.out.println(a.distance(c));
+		System.out.println(c.distance(b));
+		//graphic.drawImage(new_img,0,0, null);
+		
+		m_modele.set_image(new_img);		
+	}
+	
+	public void calculer_flocon(int n, Point a, Point e){
+		if(n == 0){
+			graphic.drawLine(a.x, a.y, e.x, e.y);
+		}
+		else{
+			int distanceX = e.x - a.x;
+			int distanceY = e.y - a.y;
+			
+			Point c = new Point((int)(0.5*(a.x + e.x)+Math.sqrt(3)*(a.y - e.y)/6), (int)(0.5*(a.y + e.y)+Math.sqrt(3)*(e.x - a.x)/6));
+			Point b = new Point(a.x + distanceX/3, a.y + distanceY/3);
+			Point d = new Point(a.x + 2*distanceX/3, a.y + 2*distanceY/3);
+			
+			calculer_flocon(n-1, a, b);
+			calculer_flocon(n-1, b, c);
+			calculer_flocon(n-1, c, d);
+			calculer_flocon(n-1, d, e);
+		}
+		
+	}
 }

@@ -71,7 +71,8 @@ public class FractalesVue extends JFrame implements Observer, ActionListener {
 		m_modele.set_hauteur_fractale((int)(m_hauteur_fenetre - m_UI.getHeight()));
 		JPanel zone_fractale = new JPanel();
 		zone_fractale.setBackground(Color.BLACK);
-		m_controleur.calculer_image_fractale();
+		//m_controleur.calculer_image_fractale();
+		m_controleur.calculer_image_flocon(5);
 		m_conteneur_image = new JLabel();
 		m_conteneur_image.setIcon(new ImageIcon(m_modele.get_image()));
 		zone_fractale.add(m_conteneur_image);
