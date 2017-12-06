@@ -10,7 +10,7 @@ public class FractalesModele extends Observable {
 	private int m_iterations_max;
 	public static int ITERATIONS_MIN = 50;
 	public static int ZOOM_MIN = 50;
-	public static int FACTEUR_ZOOM = 1000;
+	public static int FACTEUR_ZOOM = 2;
 	public static double FACTEUR_DEPLACEMENT = 1;
 	public static double XYPOS_MIN = -2;
 	public static double XYPOS_MAX = 2;
@@ -47,7 +47,7 @@ public class FractalesModele extends Observable {
 	
 	public void incZoom(int facteur_zoom)
 	{
-		m_zoom += FACTEUR_ZOOM * facteur_zoom;
+		m_zoom *= FACTEUR_ZOOM * facteur_zoom;
 		if (m_zoom < ZOOM_MIN)
 			m_zoom = ZOOM_MIN;
 		setChanged();

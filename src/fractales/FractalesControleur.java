@@ -15,9 +15,9 @@ public class FractalesControleur {
 	}
 
 	public Complex calculer_complexe(double x, double y) {
-		double réel = m_modele.get_Xpos() + (x - (m_modele.get_largeur_fractale() / 2)) / m_modele.getZoom();
+		double reel = m_modele.get_Xpos() + (x - (m_modele.get_largeur_fractale() / 2)) / m_modele.getZoom();
 		double imaginaire = m_modele.get_Ypos() + (y - (m_modele.get_hauteur_fractale() / 2)) / m_modele.getZoom();
-		return new Complex(réel, imaginaire);
+		return new Complex(reel, imaginaire);
 	}
 
 	private void calculer_couleur_point(BufferedImage new_img, int x, int y, int iteration) {
