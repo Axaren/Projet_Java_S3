@@ -15,16 +15,15 @@ public class FractalesControleur {
 	}
 
 	public Complex calculer_complexe(double x, double y) {
-		double réel = m_modele.get_point_min().getReal() + ((x / m_modele.get_largeur_fractale()) * (m_modele.get_point_max().getReal() - m_modele.get_point_min().getReal()));
-		double imaginaire = m_modele.get_point_max().getImaginary()
-				- ((y / m_modele.get_hauteur_fractale()) * (m_modele.get_point_max().getImaginary() - m_modele.get_point_min().getImaginary()));
+		double réel = m_modele.get_Xpos() + (x - (m_modele.get_largeur_fractale() / 2)) / m_modele.getZoom();
+		double imaginaire = m_modele.get_Ypos() + (y - (m_modele.get_hauteur_fractale() / 2)) / m_modele.getZoom();
 		return new Complex(réel, imaginaire);
 	}
 
 	private void calculer_couleur_point(BufferedImage new_img, int x, int y, int iteration) {
 
 		if (iteration < m_modele.get_iterations_max())
-			new_img.setRGB(x, y, new Color(0, (iteration * 3) % 254, 0).getRGB());
+			new_img.setRGB(x, y, new Color(0, (iteration * 15) % 254, 0).getRGB());
 			//new_img.setRGB(x, y, Color.WHITE.getRGB());
 		else
 			new_img.setRGB(x, y, Color.WHITE.getRGB());
@@ -68,6 +67,30 @@ public class FractalesControleur {
 	public void inc_iterations_max(int n)
 	{
 		m_modele.inc_iterations_max(n);
+	}
+	
+	public void inc_zoom(int n)
+	{
+		m_modele.incZoom(n);
+	}
+	
+	public void deplacement(Direction dir)
+	{
+		switch(dir)
+		{
+		case HAUT:
+			m_modele.set_Ypos(m_modele.get_Ypos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+			break;
+		case GAUCHE:
+			m_modele.set_Xpos(m_modele.get_Xpos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+			break;
+		case BAS:
+			m_modele.set_Ypos(m_modele.get_Ypos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+			break;
+		case DROITE:
+			m_modele.set_Xpos(m_modele.get_Xpos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+			break;
+		}
 	}
 
 }

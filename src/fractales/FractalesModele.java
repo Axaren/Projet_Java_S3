@@ -8,14 +8,79 @@ import org.apache.commons.math3.complex.Complex;
 public class FractalesModele extends Observable {
 
 	private int m_iterations_max;
+	public static int ITERATIONS_MIN = 50;
+	public static int ZOOM_MIN = 50;
+	public static int FACTEUR_ZOOM = 1000;
+	public static double FACTEUR_DEPLACEMENT = 1;
+	public static double XYPOS_MIN = -2;
+	public static double XYPOS_MAX = 2;
 	
 	private int m_largeur_fractale;
 	private int m_hauteur_fractale;
 	
 	private Complex m_point_min;
 	private Complex m_point_max;
+	private double m_x_pos;
+	private double m_y_pos;
 	
+	private int m_zoom;
+
 	BufferedImage m_image;
+	
+	public FractalesModele() {
+		m_iterations_max = ITERATIONS_MIN;
+		m_x_pos = 0;
+		m_y_pos = 0;
+		m_zoom = 100;
+		
+	}
+	
+	public int getZoom() {
+		return m_zoom;
+	}
+
+	public void setZoom(int zoom) {
+		m_zoom = zoom;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void incZoom(int facteur_zoom)
+	{
+		m_zoom += FACTEUR_ZOOM * facteur_zoom;
+		if (m_zoom < ZOOM_MIN)
+			m_zoom = ZOOM_MIN;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public double get_Xpos() {
+		return m_x_pos;
+	}
+
+	public void set_Xpos(double x_pos) {
+		m_x_pos = x_pos;
+		if (m_x_pos > 2.5)
+			m_x_pos = 2.5;
+		if (m_x_pos < -2.5)
+			m_x_pos = -2.5;
+		setChanged();
+		notifyObservers();
+	}
+
+	public double get_Ypos() {
+		return m_y_pos;
+	}
+
+	public void set_Ypos(double y_pos) {
+		m_y_pos = y_pos;
+		if (m_y_pos > 2.5)
+			m_y_pos = 2.5;
+		if (m_y_pos < -2.5)
+			m_y_pos = -2.5;
+		setChanged();
+		notifyObservers();
+	}
 	
 	public BufferedImage get_image() {
 		return m_image;
@@ -23,12 +88,8 @@ public class FractalesModele extends Observable {
 
 	public void set_image(BufferedImage image) {
 		m_image = image;
-	}
-
-	public FractalesModele() {
-		m_iterations_max = 10;
-		m_point_min = new Complex(-2, -1.25);
-		m_point_max = new Complex(2, 1.25);
+		setChanged();
+		notifyObservers();
 	}
 	
 	public Complex get_point_min() {
@@ -83,7 +144,10 @@ public class FractalesModele extends Observable {
 	
 	public void inc_iterations_max(int n)
 	{
+		if (m_iterations_max + n > ITERATIONS_MIN)
 		m_iterations_max += n;
+		else
+			m_iterations_max = ITERATIONS_MIN;
 		setChanged();
 		notifyObservers();
 	}
