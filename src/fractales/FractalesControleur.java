@@ -86,14 +86,15 @@ public class FractalesControleur implements IFractales {
 	public void inc_zoom(int n)
 	{
 		m_modele.incZoom(n);
-		if(!m_modele.estMandelbrot())
-			m_modele.inc_iterations_max(1);
+		if(m_modele.getTypeFractale() == TypeFractale.FLOCON_KOCH)
+			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH);
+			
 	}
 	
 	@Override
 	public void deplacement(Direction dir)
 	{
-		if(m_modele.estMandelbrot()){
+		if(m_modele.getTypeFractale() == TypeFractale.FLOCON_KOCH){
 			switch(dir)
 			{
 			case HAUT:
