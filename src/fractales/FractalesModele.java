@@ -8,13 +8,15 @@ import org.apache.commons.math3.complex.Complex;
 
 public class FractalesModele extends Observable {
 
-	private int m_iterations_max;
+	private int m_iterations;
 	public static int ITERATIONS_MIN_MANDELBROT = 75;
 	public static int INCREMENTATION_ITERATIONS_MANDELBROT = 25;
 	public static int INCREMENTATION_ITERATIONS_FLOCONS_KOCH = 1;
-	public static int ITERATIONS_MIN_KOCH = 4;
+	public static int ITERATIONS_MIN_KOCH = 0;
+	
 	public static int ZOOM_MIN = 100;
 	public static int FACTEUR_ZOOM = 2;
+	
 	public static double FACTEUR_DEPLACEMENT = 1;
 	public static double XYPOS_MIN = -2;
 	public static double XYPOS_MAX = 2;
@@ -22,11 +24,9 @@ public class FractalesModele extends Observable {
 	private int m_largeur_fractale;
 	private int m_hauteur_fractale;
 	
-	//private Complex m_point_min;
-	//private Complex m_point_max;
 	private double m_x_pos;
 	private double m_y_pos;
-	//private coordonnées déplacements pour Koch;
+	//coordonnées déplacements pour Koch;
 	private int m_x_deplacement;
 	private int m_y_deplacement;
 	
@@ -37,7 +37,7 @@ public class FractalesModele extends Observable {
 	private TypeFractale m_fractale;
 	
 	public FractalesModele() {
-		m_iterations_max = ITERATIONS_MIN_MANDELBROT;
+		m_iterations = ITERATIONS_MIN_MANDELBROT;
 		m_x_pos = 0;
 		m_y_pos = 0;
 		m_x_deplacement = 0;
@@ -140,19 +140,19 @@ public class FractalesModele extends Observable {
 		notifyObservers();
 	}
 
-	public int get_iterations_max() {
-		return m_iterations_max;
+	public int get_iterations() {
+		return m_iterations;
 	}
 
-	public void set_iterations_max(int iterations_max) {
-		m_iterations_max = iterations_max;
+	public void set_iterations(int iterations_max) {
+		m_iterations = iterations_max;
 		setChanged();
 		notifyObservers();
 	}
 	
-	public void inc_iterations_max(int n)
+	public void inc_iterations(int n)
 	{
-		m_iterations_max += n;
+		m_iterations += n;
 		setChanged();
 		notifyObservers();
 	}
