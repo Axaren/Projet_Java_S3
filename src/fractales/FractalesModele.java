@@ -9,8 +9,11 @@ import org.apache.commons.math3.complex.Complex;
 public class FractalesModele extends Observable {
 
 	private int m_iterations_max;
-	public static int ITERATIONS_MIN = 50;
-	public static int ZOOM_MIN = 50;
+	public static int ITERATIONS_MIN_MANDELBROT = 75;
+	public static int INCREMENTATION_ITERATIONS_MANDELBROT = 25;
+	public static int INCREMENTATION_ITERATIONS_FLOCONS_KOCH = 1;
+	public static int ITERATIONS_MIN_KOCH = 0;
+	public static int ZOOM_MIN = 100;
 	public static int FACTEUR_ZOOM = 2;
 	public static double FACTEUR_DEPLACEMENT = 1;
 	public static double XYPOS_MIN = -2;
@@ -19,24 +22,37 @@ public class FractalesModele extends Observable {
 	private int m_largeur_fractale;
 	private int m_hauteur_fractale;
 	
-	private Complex m_point_min;
-	private Complex m_point_max;
+	//private Complex m_point_min;
+	//private Complex m_point_max;
 	private double m_x_pos;
 	private double m_y_pos;
 	
 	private int m_zoom;
 
 	private BufferedImage m_image;
-	private Graphics2D graphic;
+	
+	private boolean estMandelbrot; // Faux Mandelbrot Vrai Flocon de Koch
 	
 	public FractalesModele() {
-		m_iterations_max = ITERATIONS_MIN;
+		m_iterations_max = ITERATIONS_MIN_MANDELBROT;
 		m_x_pos = 0;
 		m_y_pos = 0;
 		m_zoom = 100;
+		estMandelbrot = true;
 		
 	}
 	
+	public boolean estMandelbrot() {
+		return estMandelbrot;
+	}
+
+	public void changerTypeFractale() {
+		if (estMandelbrot)
+			estMandelbrot = false;
+		else
+			estMandelbrot = true;
+	}
+
 	public int getZoom() {
 		return m_zoom;
 	}
@@ -94,26 +110,6 @@ public class FractalesModele extends Observable {
 		notifyObservers();
 	}
 	
-	public Complex get_point_min() {
-		return m_point_min;
-	}
-
-	public void set_point_min(Complex point_min) {
-		m_point_min = point_min;
-		setChanged();
-		notifyObservers();
-	}
-
-	public Complex get_point_max() {
-		return m_point_max;
-	}
-
-	public void set_point_max(Complex point_max) {
-		m_point_max = point_max;
-		setChanged();
-		notifyObservers();
-	}
-
 	public int get_largeur_fractale() {
 		return m_largeur_fractale;
 	}
@@ -146,10 +142,7 @@ public class FractalesModele extends Observable {
 	
 	public void inc_iterations_max(int n)
 	{
-		if (m_iterations_max + n > ITERATIONS_MIN)
 		m_iterations_max += n;
-		else
-			m_iterations_max = ITERATIONS_MIN;
 		setChanged();
 		notifyObservers();
 	}

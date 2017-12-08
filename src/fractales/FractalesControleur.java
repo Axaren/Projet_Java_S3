@@ -8,9 +8,10 @@ import java.awt.Point;
 
 import org.apache.commons.math3.complex.Complex;
 
-public class FractalesControleur {
+public class FractalesControleur implements IFractales {
 	private FractalesModele m_modele;
 	// private Complex[][] m_pixels_complexes;
+	private Graphics2D graphic;
 
 	public FractalesControleur(FractalesModele modele) {
 		m_modele = modele;
@@ -52,7 +53,7 @@ public class FractalesControleur {
 		return (q * (q + (point.getReal() - 0.25))) < (0.25 * (point.getImaginary() * point.getImaginary()));
 	}
 
-	public void calculer_image_fractale() {
+	public void calculer_image_mandelbrot() {
 		long start = System.currentTimeMillis();
 		BufferedImage new_img = new BufferedImage(m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale(), BufferedImage.TYPE_INT_RGB);
 		for (int x = 0; x < m_modele.get_largeur_fractale(); x++) {
@@ -66,16 +67,22 @@ public class FractalesControleur {
 		m_modele.set_image(new_img);
 	}
 	
-	public void inc_iterations_max(int n)
+	@Override
+	public void inc_iterations_max(int facteur)
 	{
-		m_modele.inc_iterations_max(n);
+		if (m_modele.estMandelbrot())
+		m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_MANDELBROT * facteur);
+		else
+			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH * facteur);
 	}
 	
+	@Override
 	public void inc_zoom(int n)
 	{
 		m_modele.incZoom(n);
 	}
 	
+	@Override
 	public void deplacement(Direction dir)
 	{
 		switch(dir)
@@ -95,7 +102,7 @@ public class FractalesControleur {
 		}
 	}
 
-	public void calculer_image_flocon(int iterations){
+	public void calculer_image_flocon(){
 		BufferedImage new_img = new BufferedImage(m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale(), BufferedImage.TYPE_INT_RGB);
 		
 		graphic = new_img.createGraphics();
@@ -103,6 +110,7 @@ public class FractalesControleur {
 		Point a = new Point(m_modele.get_largeur_fractale() / 2 , m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3 -(int)(m_modele.get_largeur_fractale() / (2*Math.sqrt(3))));
 		Point b = new Point(m_modele.get_largeur_fractale() / 3, 								   m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
 		Point c = new Point(m_modele.get_largeur_fractale() - m_modele.get_largeur_fractale() / 3, m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
+		int iterations = m_modele.get_iterations_max();
 		calculer_flocon(iterations, a, b);
 		calculer_flocon(iterations, b, c);
 		calculer_flocon(iterations, c, a);
@@ -133,5 +141,22 @@ public class FractalesControleur {
 			calculer_flocon(n-1, d, e);
 		}
 		
+	}
+	
+	@Override
+	public void calculer_image_fractale()
+	{
+		if (!m_modele.estMandelbrot())
+			calculer_image_flocon();
+		else
+			calculer_image_mandelbrot();
+	}
+	
+	@Override
+	public void reinitialiserParametres()
+	{
+		m_modele.setZoom(FractalesModele.ZOOM_MIN);
+		m_modele.set_Xpos(0);
+		m_modele.set_Ypos(0);
 	}
 }
