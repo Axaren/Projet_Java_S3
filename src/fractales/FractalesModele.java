@@ -31,26 +31,23 @@ public class FractalesModele extends Observable {
 
 	private BufferedImage m_image;
 	
-	private boolean estMandelbrot; // Faux Mandelbrot Vrai Flocon de Koch
+	private TypeFractale m_fractale;
 	
 	public FractalesModele() {
 		m_iterations_max = ITERATIONS_MIN_MANDELBROT;
 		m_x_pos = 0;
 		m_y_pos = 0;
 		m_zoom = 100;
-		estMandelbrot = true;
+		m_fractale = TypeFractale.MANDELBROT;
 		
 	}
 	
-	public boolean estMandelbrot() {
-		return estMandelbrot;
+	public TypeFractale getTypeFractale() {
+		return m_fractale;
 	}
 
-	public void changerTypeFractale() {
-		if (estMandelbrot)
-			estMandelbrot = false;
-		else
-			estMandelbrot = true;
+	public void changerTypeFractale(TypeFractale fractale) {
+		m_fractale = fractale;
 	}
 
 	public int getZoom() {

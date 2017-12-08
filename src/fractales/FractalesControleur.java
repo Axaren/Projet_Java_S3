@@ -70,10 +70,16 @@ public class FractalesControleur implements IFractales {
 	@Override
 	public void inc_iterations_max(int facteur)
 	{
-		if (m_modele.estMandelbrot())
-		m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_MANDELBROT * facteur);
-		else
+		switch (m_modele.getTypeFractale())
+		{
+		case MANDELBROT:
+			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_MANDELBROT * facteur);
+			break;
+		case FLOCON_KOCH:
 			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH * facteur);
+			break;
+
+		}
 	}
 	
 	@Override
@@ -146,10 +152,15 @@ public class FractalesControleur implements IFractales {
 	@Override
 	public void calculer_image_fractale()
 	{
-		if (!m_modele.estMandelbrot())
-			calculer_image_flocon();
-		else
+		switch (m_modele.getTypeFractale())
+		{
+		case MANDELBROT:
 			calculer_image_mandelbrot();
+			break;
+		case FLOCON_KOCH:
+			calculer_image_flocon();
+			break;
+		}
 	}
 	
 	@Override
