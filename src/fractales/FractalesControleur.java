@@ -80,25 +80,46 @@ public class FractalesControleur implements IFractales {
 	public void inc_zoom(int n)
 	{
 		m_modele.incZoom(n);
+		if(!m_modele.estMandelbrot())
+			m_modele.inc_iterations_max(1);
 	}
 	
 	@Override
 	public void deplacement(Direction dir)
 	{
-		switch(dir)
-		{
-		case HAUT:
-			m_modele.set_Ypos(m_modele.get_Ypos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+		if(m_modele.estMandelbrot()){
+			switch(dir)
+			{
+			case HAUT:
+				m_modele.set_Ypos(m_modele.get_Ypos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+				break;
+			case GAUCHE:
+				m_modele.set_Xpos(m_modele.get_Xpos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+				break;
+			case BAS:
+				m_modele.set_Ypos(m_modele.get_Ypos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+				break;
+			case DROITE:
+				m_modele.set_Xpos(m_modele.get_Xpos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
 			break;
-		case GAUCHE:
-			m_modele.set_Xpos(m_modele.get_Xpos() - (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
+			}
+		}
+		else{
+			switch(dir)
+			{
+			case HAUT:
+				m_modele.set_y_deplacement(m_modele.get_y_deplacement() - (int)(FractalesModele.FACTEUR_DEPLACEMENT) * 100);
+				break;
+			case GAUCHE:
+				m_modele.set_x_deplacement(m_modele.get_x_deplacement() - (int)(FractalesModele.FACTEUR_DEPLACEMENT) * 100);
+				break;
+			case BAS:
+				m_modele.set_y_deplacement(m_modele.get_y_deplacement() + (int)(FractalesModele.FACTEUR_DEPLACEMENT) * 100);
+				break;
+			case DROITE:
+				m_modele.set_x_deplacement(m_modele.get_x_deplacement() + (int)(FractalesModele.FACTEUR_DEPLACEMENT) * 100);
 			break;
-		case BAS:
-			m_modele.set_Ypos(m_modele.get_Ypos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
-			break;
-		case DROITE:
-			m_modele.set_Xpos(m_modele.get_Xpos() + (FractalesModele.FACTEUR_DEPLACEMENT * 100 / m_modele.getZoom()));
-			break;
+			}
 		}
 	}
 
@@ -107,18 +128,23 @@ public class FractalesControleur implements IFractales {
 		
 		graphic = new_img.createGraphics();
 		//graphic.clearRect(0, 0, m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale());
-		Point a = new Point(m_modele.get_largeur_fractale() / 2 , m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3 -(int)(m_modele.get_largeur_fractale() / (2*Math.sqrt(3))));
-		Point b = new Point(m_modele.get_largeur_fractale() / 3, 								   m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
-		Point c = new Point(m_modele.get_largeur_fractale() - m_modele.get_largeur_fractale() / 3, m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale() / 3);
+		
+		int largeur = (m_modele.get_largeur_fractale()/3)*(int)(m_modele.getZoom()/100);
+		Point a = new Point(m_modele.get_largeur_fractale()/2 + m_modele.get_x_deplacement() ,
+				m_modele.get_hauteur_fractale() - m_modele.get_hauteur_fractale()/3 
+				- (int)(m_modele.get_largeur_fractale() / (2*Math.sqrt(3))) 
+				+ m_modele.get_y_deplacement());
+		Point b = new Point(a.x - largeur/2 , a.y + (int)(largeur*Math.sqrt(3)/2));
+		Point c = new Point(a.x + largeur/2 , b.y );
+
 		int iterations = m_modele.get_iterations_max();
 		calculer_flocon(iterations, a, b);
 		calculer_flocon(iterations, b, c);
 		calculer_flocon(iterations, c, a);
 		
-		System.out.println(a.distance(b));
+		System.out.println(a.distance(b));  //Tests
 		System.out.println(a.distance(c));
 		System.out.println(c.distance(b));
-		//graphic.drawImage(new_img,0,0, null);
 		
 		m_modele.set_image(new_img);		
 	}
