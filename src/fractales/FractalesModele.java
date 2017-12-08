@@ -67,7 +67,10 @@ public class FractalesModele extends Observable {
 	
 	public void incZoom(int facteur_zoom)
 	{
-		m_zoom *= FACTEUR_ZOOM * facteur_zoom;
+		if (facteur_zoom > 0)
+		m_zoom *= FACTEUR_ZOOM;
+		else
+			m_zoom /= FACTEUR_ZOOM;
 		if (m_zoom < ZOOM_MIN)
 			m_zoom = ZOOM_MIN;
 		setChanged();

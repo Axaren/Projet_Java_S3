@@ -231,7 +231,7 @@ public class FractalesVue extends JFrame implements Observer, ActionListener {
 				break;
 				
 			case FLOCON_KOCH:
-				if (m_modele.get_iterations_max() <= FractalesModele.ITERATIONS_MIN_KOCH)
+				if (m_modele.get_iterations_max() <= 0)
 					((JButton)e.getSource()).setEnabled(false);
 				break;
 			}

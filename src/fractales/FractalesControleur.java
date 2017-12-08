@@ -83,11 +83,11 @@ public class FractalesControleur implements IFractales {
 	}
 	
 	@Override
-	public void inc_zoom(int n)
+	public void inc_zoom(int facteur)
 	{
-		m_modele.incZoom(n);
+		m_modele.incZoom(facteur);
 		if(m_modele.getTypeFractale() == TypeFractale.FLOCON_KOCH)
-			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH * n);
+			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH * facteur);
 			
 	}
 	
