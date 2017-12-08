@@ -12,7 +12,7 @@ public class FractalesModele extends Observable {
 	public static int ITERATIONS_MIN_MANDELBROT = 75;
 	public static int INCREMENTATION_ITERATIONS_MANDELBROT = 25;
 	public static int INCREMENTATION_ITERATIONS_FLOCONS_KOCH = 1;
-	public static int ITERATIONS_MIN_KOCH = 0;
+	public static int ITERATIONS_MIN_KOCH = 4;
 	public static int ZOOM_MIN = 100;
 	public static int FACTEUR_ZOOM = 2;
 	public static double FACTEUR_DEPLACEMENT = 1;
@@ -26,6 +26,9 @@ public class FractalesModele extends Observable {
 	//private Complex m_point_max;
 	private double m_x_pos;
 	private double m_y_pos;
+	//private coordonnées déplacements pour Koch;
+	private int m_x_deplacement;
+	private int m_y_deplacement;
 	
 	private int m_zoom;
 
@@ -37,6 +40,8 @@ public class FractalesModele extends Observable {
 		m_iterations_max = ITERATIONS_MIN_MANDELBROT;
 		m_x_pos = 0;
 		m_y_pos = 0;
+		m_x_deplacement = 0;
+		m_y_deplacement = 0;
 		m_zoom = 100;
 		m_fractale = TypeFractale.MANDELBROT;
 		
@@ -96,6 +101,11 @@ public class FractalesModele extends Observable {
 		setChanged();
 		notifyObservers();
 	}
+
+	public int get_x_deplacement(){return m_x_deplacement;}
+	public void set_x_deplacement(int x){m_x_deplacement = x;}
+	public int get_y_deplacement(){return m_y_deplacement;}
+	public void set_y_deplacement(int y){m_y_deplacement = y;}
 	
 	public BufferedImage get_image() {
 		return m_image;
