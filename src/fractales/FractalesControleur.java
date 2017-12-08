@@ -87,7 +87,7 @@ public class FractalesControleur implements IFractales {
 	{
 		m_modele.incZoom(n);
 		if(m_modele.getTypeFractale() == TypeFractale.FLOCON_KOCH)
-			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH);
+			m_modele.inc_iterations_max(FractalesModele.INCREMENTATION_ITERATIONS_FLOCONS_KOCH * n);
 			
 	}
 	
@@ -134,7 +134,6 @@ public class FractalesControleur implements IFractales {
 		BufferedImage new_img = new BufferedImage(m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale(), BufferedImage.TYPE_INT_RGB);
 		
 		graphic = new_img.createGraphics();
-		//graphic.clearRect(0, 0, m_modele.get_largeur_fractale(), m_modele.get_hauteur_fractale());
 		
 		int largeur = (m_modele.get_largeur_fractale()/3)*(int)(m_modele.getZoom()/100);
 		Point a = new Point(m_modele.get_largeur_fractale()/2 + m_modele.get_x_deplacement() ,
